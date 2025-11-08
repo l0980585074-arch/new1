@@ -1,7 +1,7 @@
 from flask import Flask, request
 import requests, hmac, hashlib, time, os
 
-app = Flask(new1)
+app = Flask(pionex-webhook)
 
 API_KEY = os.environ.get("PIONEX_API_KEY")
 SECRET = os.environ.get("PIONEX_SECRET")
@@ -32,5 +32,5 @@ def signal():
 
     return {"status": "ok"}
 
-if new1 == "main":
+if pionex-webhook == "main":
     app.run(host="0.0.0.0", port=5000)
