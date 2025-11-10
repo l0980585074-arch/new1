@@ -5,8 +5,8 @@ from datetime import datetime
 app = Flask(__name__)
 
 # ======== 你的派網 API 資訊 ========
-API_KEY = 8p8EdGuzjN1Kw79s4vjjdDYZooBorzqgN9pZ7kxEwQ2Y9dAbi9KQJmuVpJuEGPFHb9
-API_SECRET = HoAjDCVkMf4gWjiM77vW1Gtzrwpd6yhFA3AbdJMps0SSjJKIK4RHWF9tvqNAWIQS
+API_KEY = "8p8EdGuzjN1Kw79s4vjjdDYZooBorzqgN9pZ7kxEwQ2Y9dAbi9KQJmuVpJuEGPFHb9"
+API_SECRET = "HoAjDCVkMf4gWjiM77vW1Gtzrwpd6yhFA3AbdJMps0SSjJKIK4RHWF9tvqNAWIQS"
 BASE_URL = "https://api.pionex.com"
 
 # ======== 基礎測試用路由 ========
