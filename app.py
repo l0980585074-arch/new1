@@ -1,39 +1,32 @@
 from flask import Flask, request
-import requests, hmac, hashlib, time, os
+import json, time, os
 
-app = Flask("pionex-webhook")
+app = Flask(__name__)
 
-API_KEY = os.environ.get("PIONEX_API_KEY")
-SECRET = os.environ.get("PIONEX_SECRET")
+# ---- TEST MODE SWITCH ----
+TEST_MODE = True   # ← True = simulate only, False = real order
 
-def pionex_request(endpoint, data):
-    timestamp = str(int(time.time() * 1000))
-    payload = f"{endpoint}{timestamp}{data}".encode()
-    sign = hmac.new(SECRET.encode(), payload, hashlib.sha256).hexdigest()
-    headers = {
-        "PIONEX-KEY": API_KEY,
-        "PIONEX-SIGNATURE": sign,
-        "PIONEX-TIMESTAMP": timestamp,
-        "Content-Type": "application/json"
-    }
-    return requests.post(f"https://api.pionex.com{endpoint}", headers=headers, data=data)
-
+# ---- MAIN ENDPOINT ----
 @app.route("/signal", methods=["POST"])
 def signal():
     data = request.json
-    print("✅ 收到訊號：", data)
+    print("✅ Signal received:", data)
 
-    if data.get("action") == "buy":
-        order = '{"symbol":"BTC_USDT","side":"BUY","type":"MARKET","quantity":0.01}'
-        pionex_request("/api/v1/order", order)
-    elif data.get("action") == "sell":
-        order = '{"symbol":"BTC_USDT","side":"SELL","type":"MARKET","quantity":0.01}'
-        pionex_request("/api/v1/order", order)
+    action = data.get("action")      # "buy" or "sell"
+    symbol = data.get("symbol", "BTC_USDT")
+    qty = float(data.get("qty", 0.01))
 
-    return {"status": "ok"}
+    # Simulate order
+    if TEST_MODE:
+        print(f"[TEST MODE] {action.upper()} {symbol} {qty}")
+        return {"status": "ok", "mode": "test"}
 
+    # --- REAL ORDER PLACEHOLDER ---
+    # Here we will call Pionex API later
+    print(f"Real order would be sent: {action.upper()} {symbol} {qty}")
+    return {"status": "ok", "mode": "live"}
+
+# ---- START SERVER ----
 if __name__ == "__main__":
-    import os
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
