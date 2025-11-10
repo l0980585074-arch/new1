@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify
 import os
 
+# 建立 Flask App
 app = Flask("app")
 
+# ✅ 首頁路由（檢查伺服器狀態）
 @app.route("/", methods=["GET"])
 def home():
     return "Webhook server running 🌐", 200
 
+# ✅ 接收訊號路由
 @app.route("/signal", methods=["POST"])
 def signal():
     data = request.get_json()
@@ -24,6 +27,11 @@ def signal():
         print("⚠️ Unknown action")
 
     return jsonify({"status": "ok", "received": data})
+
+# ✅ 自動喚醒機制：Render 預設會睡著，用這個保持活著
+@app.route("/ping", methods=["GET"])
+def ping():
+    return "pong", 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
