@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -28,8 +29,12 @@ def signal():
     return jsonify({"status": "ok", "received": data}), 200
 
 # 💖 UptimeRobot 保活用的 Ping 路由
+from datetime import datetime  # ← 放在檔案最上方的 import 區也可以
+
 @app.route("/ping", methods=["GET"])
 def ping():
+    # 顯示在 Render logs 裡
+    print(f"✅ Ping received from UptimeRobot at {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
     return jsonify({"status": "ok", "message": "pong 💕"}), 200
 
 # 🚀 Render 啟動設定
