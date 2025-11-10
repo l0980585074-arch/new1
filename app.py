@@ -1,17 +1,17 @@
 from flask import Flask, request, jsonify
 import os
 
-app = Flask("app")
+app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
     return "Webhook server running 🌐", 200
 
-# ✅ 接收訊號路由
+# ✅ 接收 webhook 訊號
 @app.route("/signal", methods=["POST"])
 def signal():
     data = request.get_json()
-    print("✅ Signal received:", data, "🚀")
+    print("✅ Signal received:", data)
 
     action = data.get("action")
     symbol = data.get("symbol")
@@ -24,9 +24,9 @@ def signal():
     else:
         print("⚠️ Unknown action")
 
-    return jsonify({"status": "ok", "received": data})
+    return jsonify({"status": "ok", "received": data}), 200
 
-# ✅ 自動喚醒機制：Render 防止睡著，UptimeRobot 會打這個
+# ✅ UptimeRobot ping 防止 Render 睡著
 @app.route("/ping", methods=["GET"])
 def ping():
     return jsonify({"status": "ok", "message": "pong 💕"}), 200
