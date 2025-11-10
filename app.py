@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 
 app = Flask("app")
+@app.route("/", methods=["GET"])
+def home():
+    return "Webhook server running 🟢", 200
 
 @app.route("/signal", methods=["POST"])
 def signal():
