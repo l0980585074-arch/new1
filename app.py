@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-app = Flask(__name__)
+app = Flask("app")
 
 @app.route("/signal", methods=["POST"])
 def signal():
