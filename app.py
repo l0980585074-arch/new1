@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
 app = Flask("app")
+
 @app.route("/", methods=["GET"])
 def home():
     return "Webhook server running 🟢", 200
@@ -14,7 +15,6 @@ def signal():
     symbol = data.get("symbol")
     qty = data.get("qty")
 
-    # 這裡先模擬交易訊號（實際連接交易所 API 再加上去）
     if action == "buy":
         print(f"[TEST MODE] BUY {symbol} {qty}")
     elif action == "sell":
