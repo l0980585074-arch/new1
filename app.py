@@ -1,32 +1,25 @@
-from flask import Flask, request
-import json, time, os
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# ---- TEST MODE SWITCH ----
-TEST_MODE = True   # ← True = simulate only, False = real order
-
-# ---- MAIN ENDPOINT ----
 @app.route("/signal", methods=["POST"])
 def signal():
-    data = request.json
+    data = request.get_json()
     print("✅ Signal received:", data)
 
-    action = data.get("action")      # "buy" or "sell"
-    symbol = data.get("symbol", "BTC_USDT")
-    qty = float(data.get("qty", 0.01))
+    action = data.get("action")
+    symbol = data.get("symbol")
+    qty = data.get("qty")
 
-    # Simulate order
-    if TEST_MODE:
-        print(f"[TEST MODE] {action.upper()} {symbol} {qty}")
-        return {"status": "ok", "mode": "test"}
+    # 這裡先模擬交易訊號（實際連接交易所 API 再加上去）
+    if action == "buy":
+        print(f"[TEST MODE] BUY {symbol} {qty}")
+    elif action == "sell":
+        print(f"[TEST MODE] SELL {symbol} {qty}")
+    else:
+        print("⚠️ Unknown action")
 
-    # --- REAL ORDER PLACEHOLDER ---
-    # Here we will call Pionex API later
-    print(f"Real order would be sent: {action.upper()} {symbol} {qty}")
-    return {"status": "ok", "mode": "live"}
+    return jsonify({"status": "ok", "received": data})
 
-# ---- START SERVER ----
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=10000)
