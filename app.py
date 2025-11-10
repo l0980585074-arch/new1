@@ -28,10 +28,10 @@ def signal():
 
     return jsonify({"status": "ok", "received": data})
 
-# ✅ 自動喚醒機制：Render 預設會睡著，用這個保持活著
+# 自動喚醒機制：Render 防止睡著，用這個供監控系統 Ping
 @app.route("/ping", methods=["GET"])
 def ping():
-    return "pong", 200
+    return jsonify({"status": "ok", "message": "pong 🏓"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
